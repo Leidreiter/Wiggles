@@ -47,20 +47,23 @@ body {
 }
 
 /* ===== UTILIDADES GLOBALES ===== */
-.container-header {
-    width: 90%;
+.container-header,
+.container {
+    width: clamp(90%, 95%, 95%);
+    /* O mejor aún, con viewport: */
+    width: clamp(90%, 92vw, 95%);
     max-width: 1400px;
     margin: 0 auto;
 }
+
 .container {
-    width: 90%;
-    max-width: 1400px;
-    margin: 0 auto;
     padding: 120px 0;
     display: flex;
     flex-direction: column;
     row-gap: 60px;
 }
+
+/* Ya no necesitas media query para el width! */
 
 
 /* Estilos de títulos reutilizables */
@@ -82,6 +85,7 @@ p {
     line-height: 1.6;
     color: #e5e7eb;
 }
+
 /* Estilos de em reutilizables */
 h2 em,
 .hero-text em {
@@ -198,7 +202,7 @@ h2 em,
 }
 
 /* Backgrounds reutilizables */
-.bg{
+.bg {
     background: radial-gradient(circle at center,
             #02c39a 0%,
             #028090 45%,
@@ -312,12 +316,13 @@ h2 em,
 }
 
 .hero-text h1 {
-    font-size: 64px;
+    font-size: 60px;
     line-height: 1;
     font-weight: 400;
     letter-spacing: 2px;
 }
-.hero-text p{
+
+.hero-text p {
     max-width: 75%;
 }
 
@@ -418,12 +423,12 @@ h2 em,
     height: 500px;
 }
 
-.solution-card {
+.problema-card {
     flex: 1;
     background: var(--primary-color);
     border-radius: 20px;
     border: 1px solid #ffffff28;
-    padding: var(--card-padding);
+    padding: 10px;
     display: flex;
     justify-content: space-between;
     overflow: hidden;
@@ -431,37 +436,49 @@ h2 em,
     transition: flex 0.6s ease;
 }
 
-.problemas-cards:hover .solution-card {
+.problemas-cards:hover .problema-card {
     flex: 1;
     border: 1px solid #ffffff28;
 }
 
-.problemas-cards:hover .solution-card:hover {
+.problemas-cards:hover .problema-card:hover {
     flex: 3;
     border: 1px solid var(--borde);
     transition: border 0.4s ease;
 }
 
-.solution-card.active {
+.problema-card.active {
     flex: 3;
 }
 
 /* ===== CONTENT ===== */
-.solution-content {
-    max-width: 50%;
+.problema-content {
     display: flex;
     flex-direction: column;
     gap: var(--gap-default);
     height: 100%;
+    padding: 20px;
+    max-width: 100%;
+    transition: max-width 0.6s ease;
 }
 
-@media (max-width: 768px){
-    .solution-content {
-        max-width: 100%;
+/* Solo en desktop: 60% cuando está activa o en hover */
+@media (min-width: 769px) {
+
+    .problema-card.active .problema-content,
+    .problemas-cards:hover .problema-card:hover .problema-content {
+        max-width: 60%;
     }
 }
 
-.solution-content p {
+/* En móvil siempre 100% */
+@media (max-width: 768px) {
+    .problema-content {
+        max-width: 100% !important;
+    }
+}
+
+.problema-content p {
     font-size: 18px;
     opacity: 0;
     max-height: 0;
@@ -472,20 +489,21 @@ h2 em,
         max-height 0.4s ease;
 }
 
-.solution-card.active .solution-content p,
-.problemas-cards:hover .solution-card:hover .solution-content p {
+
+.problema-card.active .problema-content p,
+.problemas-cards:hover .problema-card:hover .problema-content p {
     opacity: 1;
     max-height: 200px;
     transform: translateY(0);
 }
 
-.problemas-cards:hover .solution-card.active:not(:hover) .solution-content p {
+.problemas-cards:hover .problema-card.active:not(:hover) .problema-content p {
     opacity: 0;
     max-height: 0;
     transform: translateY(10px);
 }
 
-.solution-content a {
+.problema-content a {
     margin-top: auto;
     align-self: flex-start;
     color: #fff;
@@ -495,36 +513,36 @@ h2 em,
 }
 
 /* ===== MEDIA ===== */
-.solution-media {
+.problema-media {
     width: 0;
     opacity: 0;
     transition: all 0.6s ease;
 }
 
-.solution-card.active .solution-media,
-.problemas-cards:hover .solution-card:hover .solution-media {
+.problema-card.active .problema-media,
+.problemas-cards:hover .problema-card:hover .problema-media {
     width: 320px;
     opacity: 1;
 }
 
-.problemas-cards:hover .solution-card.active .solution-media {
+.problemas-cards:hover .problema-card.active .problema-media {
     width: 0;
     opacity: 0;
 }
 
-.problemas-cards:hover .solution-media {
+.problemas-cards:hover .problema-media {
     width: 0;
     opacity: 0;
     transform: translateX(20px);
 }
 
-.problemas-cards:hover .solution-card:hover .solution-media {
+.problemas-cards:hover .problema-card:hover .problema-media {
     width: 320px;
     opacity: 1;
     transform: translateX(0);
 }
 
-.solution-media img {
+.problema-media img {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -724,7 +742,7 @@ h2 em,
     gap: var(--gap-xs);
 }
 
-.control-item h3{
+.control-item h3 {
     margin: 0;
 }
 
@@ -736,6 +754,7 @@ h2 em,
     overflow: hidden;
     transition: opacity .3s ease, max-height .3s ease;
 }
+
 .control-item.active h3 {
     color: var(--primary-hover);
 }
@@ -834,7 +853,8 @@ h2 em,
 .planes-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: var(--card-padding);
+    column-gap: 10px;
+    row-gap: 30px;
 }
 
 /* CARD */
@@ -847,7 +867,7 @@ h2 em,
     transition: border-color .3s ease, transform .3s ease;
     display: flex;
     flex-direction: column;
-    gap: var(--gap-default);
+    gap: 20px;
     justify-content: space-between;
 }
 
@@ -931,8 +951,8 @@ h2 em,
     gap: var(--gap-default);
 }
 
-@media (max-width:768px){
-    .testimonios-header{
+@media (max-width:768px) {
+    .testimonios-header {
         flex-direction: column;
         align-items: center;
     }
@@ -1218,12 +1238,12 @@ h2 em,
         display: none;
     }
 
-    .solution-card,
-    .solution-card:hover {
+    .problema-card,
+    .problema-card:hover {
         flex: 1;
     }
 
-    .solution-media {
+    .problema-media {
         width: 100%;
         opacity: 1;
     }
@@ -1234,9 +1254,10 @@ h2 em,
     }
 
     .hero-text h1 {
-        font-size: var(--title-md);
+        font-size: var(--title-sm);
     }
-    .hero-text p{
+
+    .hero-text p {
         max-width: 100%;
     }
 
@@ -1256,9 +1277,11 @@ h2 em,
     .planes-grid {
         grid-template-columns: 1fr;
     }
+
     .store-stack {
         height: 200px;
     }
+
     .soluciones-bottom {
         margin-top: 60px;
     }
@@ -1267,7 +1290,7 @@ h2 em,
         height: 400px;
     }
 
-    .ecosistema-overlay{
+    .ecosistema-overlay {
         padding: var(--card-padding);
     }
 
@@ -1281,19 +1304,19 @@ h2 em,
         height: auto;
     }
 
-    .solution-card {
+    .problema-card {
         flex-direction: column;
         gap: var(--gap-default);
     }
 
     /* En móvil todas las cards están activas siempre */
-    .solution-card .solution-content p {
+    .problema-card .problema-content p {
         opacity: 1 !important;
         max-height: 500px !important;
         transform: translateY(0) !important;
     }
 
-    .solution-card .solution-media {
+    .problema-card .problema-media {
         width: 100% !important;
         opacity: 1 !important;
         transform: translateX(0) !important;
@@ -1336,9 +1359,9 @@ h2 em,
         padding: 80px 0;
     }
 
-    .problemas-cards:hover .solution-card:hover .solution-media,
-    .solution-card.active .solution-media,
-    .problemas-cards:hover .solution-card:hover .solution-media {
+    .problemas-cards:hover .problema-card:hover .problema-media,
+    .problema-card.active .problema-media,
+    .problemas-cards:hover .problema-card:hover .problema-media {
         width: 100%;
     }
 
